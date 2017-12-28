@@ -1,4 +1,4 @@
-const APIKey = "";
+const APIKey = config.APIKey;
 const faceIDLink = "https://westcentralus.api.cognitive.microsoft.com/face/v1.0/detect?returnFaceId=true&returnFaceAttributes=age,gender"
 
 document.getElementById("analyze").addEventListener("click", analyze);
