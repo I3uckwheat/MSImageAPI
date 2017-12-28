@@ -23,12 +23,30 @@ function analyze(){
   const request = new Request(faceIDLink, initObj)
 
   fetch(request)
-    .then(response => {return response.json()})
-    .then(appendAttributes)
-    .catch(error => console.log(error));
+    .then(response => {
+      if(response.ok){
+        return response.json()
+      } else {
+        return Promise.reject(new Error(response.statusText))
+      }
+    })
+    .then(response => {
+      if(response.length === 0){
+        return  Promise.reject(new Error("Bad Request"));
+      } else {
+        return response
+      }
+    })
+    .then(displayAttributes)
+    .catch(error => {
+      alert(error);
+      document.getElementById("attributes").innerHTML = "<p>No Face Detected</p>";
+    });
+
+    displayImage(reqBody["url"]);
 }
 
-function appendAttributes(attributes) {
+function displayAttributes(attributes) {
   const attributesDiv = document.getElementById("attributes");
   attributesDiv.innerHTML = "";
 
@@ -40,5 +58,8 @@ function appendAttributes(attributes) {
 
   attributesDiv.appendChild(age);
   attributesDiv.appendChild(gender);
+}
 
+function displayImage(url){
+  document.getElementById("photo").setAttribute("src", url);
 }
